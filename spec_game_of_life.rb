@@ -40,6 +40,7 @@ describe 'Game of life' do
       expect(subject).to respond_to(:cell_matrix)
       expect(subject).to respond_to(:cells)
       expect(subject).to respond_to(:get_live_neighbors)
+      expect(subject).to respond_to(:auto_populate)
     end
   end
 

@@ -26,15 +26,19 @@ class Board
     end
   end
 
-    # returns all the live neighbors around a particular cell
-    def get_live_neighbors(cell)
-      cooordinates = get_coordinates_to_verify([cell.x, cell.y], [self.rows, self.cols])
-      live_neighbours = []
-      cooordinates.each do |cord|
-        current_cell = self.cell_matrix[cord[0]][cord[1]]
-        live_neighbours << current_cell if current_cell.alive?
-      end
-      live_neighbours
+  # returns all the live neighbors around a particular cell
+  def get_live_neighbors(cell)
+    cooordinates = get_coordinates_to_verify([cell.x, cell.y], [self.rows, self.cols])
+    live_neighbours = []
+    cooordinates.each do |cord|
+      current_cell = self.cell_matrix[cord[0]][cord[1]]
+      live_neighbours << current_cell if current_cell.alive?
     end
+    live_neighbours
+  end
 
+  # it set cells randomly as alive or dead
+  def auto_populate
+    cells.each { |cell| cell.alive = [true, false].sample }
+  end
 end
