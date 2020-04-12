@@ -1,6 +1,8 @@
 # Conways Game of Life in Ruby programming language
 The game is a zero-player game, meaning that its evolution is determined by its initial state, requiring no further input. One interacts with the Game of Life by creating an initial configuration and observing how it evolves. It is Turing complete and can simulate a universal constructor or any other Turing machine.
 
+##### Reference: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
 ## Game Rules:
 The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, alive or dead. Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent. At each step in time, the following transitions occur:
 
@@ -29,7 +31,3 @@ These rules, which compare the behavior of the automaton to real life, can be co
 1. Install rubycritig gem https://github.com/whitesmith/rubycritic
 2. From the root path of the project run `rubycritic` to check all files, or `rubycritic file_name` to check a single one.
 ![Start Game](rubycritic.png)
-
-
-
-Reference: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
