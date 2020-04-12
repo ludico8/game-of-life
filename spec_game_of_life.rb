@@ -166,4 +166,72 @@ describe 'Game of life' do
       expect(game.board.cell_matrix[0][0].dead?).to be true
     end
   end
+
+  context 'Rules' do
+    let!(:game) {Game.new}
+    context 'Rule 1. Any live cell with fewer than two live neighbours dies, as if by underpopulation.' do 
+      it 'should kill a live cell with 1 live neighbour' do
+        game.board.cell_matrix[1][1].alive = true
+        expect(game.board.cell_matrix[1][1].alive?).to be true
+        game.play
+        expect(game.board.cell_matrix[1][1].dead?).to be true
+      end
+
+      it 'should kill a live cell with 1 live neighbour' do
+        game = Game.new(board, [ [0, 1], [0, 2] ])
+        game.play
+        expect(game.board.cell_matrix[0][1].dead?).to be true
+        expect(game.board.cell_matrix[0][2].dead?).to be true
+      end
+
+      it 'Doesnt kill live cell with 2 neighbors' do
+        game = Game.new(board, [ [0, 0], [0, 1], [0, 2] ])
+        game.play
+        expect(game.board.cell_matrix[0][1].alive?).to be true
+      end
+    end
+
+    context 'Rule 2. Any live cell with two or three live neighbours lives on to the next generation.' do
+      it 'should keep alive cell with 2 neighbors to next generation' do
+        game = Game.new(board, [ [0, 0], [0, 1], [0, 2] ])
+        board.get_live_neighbors(board.cell_matrix[0][1])
+        game.play
+        expect(game.board.cell_matrix[0][1].alive?).to be true
+      end
+
+      it 'should keep alive cell with 3 neighbors to next generation' do
+        game = Game.new(board, [ [0, 1], [1, 1], [2, 1], [2, 2] ])
+        expect(board.get_live_neighbors(board.cell_matrix[1][1]).count).to eq(3)
+        game.play
+        expect(game.board.cell_matrix[0][1].dead?). to be true
+        expect(game.board.cell_matrix[1][1].alive?). to be true
+        expect(game.board.cell_matrix[2][1].alive?). to be true
+        expect(game.board.cell_matrix[2][2].alive?). to be true
+      end
+    end
+
+    context 'Rule 3. Any live cell with more than three live neighbours dies, as if by overpopulation.' do
+      it 'should kill live cell with more than 3 live neighbors' do
+        game = Game.new(board, [ [0, 1], [1, 1], [2, 1], [2, 2], [1, 2] ])
+        expect(board.get_live_neighbors(board.cell_matrix[1][1]).count).to eq(4)
+        game.play
+        expect(game.board.cell_matrix[0][1].alive?). to be true
+        expect(game.board.cell_matrix[1][1].dead?). to be true
+        expect(game.board.cell_matrix[2][1].alive?). to be true
+        expect(game.board.cell_matrix[2][1].alive?). to be true
+        expect(game.board.cell_matrix[2][2].alive?). to be true
+        expect(game.board.cell_matrix[1][2].dead?). to be true
+      end
+    end
+
+    context 'Rule 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.' do
+      it 'revives a dead cell when it has 3 live neighbors' do
+        game = Game.new(board, [ [0, 1], [1, 1], [2, 1] ])
+        expect(board.get_live_neighbors(board.cell_matrix[1][0]).count).to eq(3)
+        game.play
+        expect(game.board.cell_matrix[1][0].alive?). to be true
+        expect(game.board.cell_matrix[1][2].alive?). to be true
+      end
+    end
+  end
 end

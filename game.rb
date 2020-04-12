@@ -21,5 +21,16 @@ class Game
 
   # it runs all the game's validations
   def play
+    cells_to_revive, cells_to_kill = [], []
+    
+    board.cells.each do |cell|
+      total_neighbors = board.get_live_neighbors(cell).count
+      to_revive, to_kill = cell_validation(total_neighbors, cell, cell.alive?)
+      cells_to_revive = cells_to_revive + to_revive
+      cells_to_kill =  cells_to_kill + to_kill
+    end
+
+    cells_to_revive.each { |dead_cell| dead_cell.revive! }
+    cells_to_kill.each { |alive_cell| alive_cell.die! }
   end
 end
