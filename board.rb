@@ -1,7 +1,9 @@
 require_relative 'cell.rb'
+require_relative 'cell_utilities.rb'
 
 # In charge to initialize Board and its cells matrix
 class Board
+  include CellUtilities
   attr_reader :rows, :cols, :cell_matrix, :cells
 
   def initialize(rows=3, cols=3)
@@ -23,5 +25,16 @@ class Board
       cell
     end
   end
-  
+
+    # returns all the live neighbors around a particular cell
+    def get_live_neighbors(cell)
+      cooordinates = get_coordinates_to_verify([cell.x, cell.y], [self.rows, self.cols])
+      live_neighbours = []
+      cooordinates.each do |cord|
+        current_cell = self.cell_matrix[cord[0]][cord[1]]
+        live_neighbours << current_cell if current_cell.alive?
+      end
+      live_neighbours
+    end
+
 end
