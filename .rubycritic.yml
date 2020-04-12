@@ -1,0 +1,6 @@
+paths: # Files to analyse.
+  - 'utilities.rb'
+  - 'board.rb'
+  - 'cell.rb'
+  - 'game.rb'
+  - 'gosu_game_of_life.rb'
