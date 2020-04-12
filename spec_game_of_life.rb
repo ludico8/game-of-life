@@ -6,6 +6,9 @@ require_relative 'board.rb'
 describe 'Game of life' do
   include CellUtilities
 
+  let!(:board) { Board.new }
+  let!(:cell) { Cell.new(1,1) }
+
   context 'Cell' do
     subject {Cell.new}
     it 'should create a new cell object' do
@@ -43,6 +46,75 @@ describe 'Game of life' do
       expect(subject).to respond_to(:auto_populate)
       expect(subject).to respond_to(:get_live_cells)
     end
+    it 'should create proper cell matrix on initialization' do
+      expect(subject.cell_matrix.is_a?(Array)).to be true
+      subject.cell_matrix.each do |row|
+        expect(row.is_a?(Array)).to be true
+        row.each do |cell|
+          expect(cell).to be_a(Cell)
+        end
+      end
+    end
+    it 'should detect a neighbors to the North' do
+      cell_to_check = subject.cell_matrix[0][1]
+      expect(cell_to_check.dead?).to be true
+      cell_to_check.alive = true
+      expect(cell_to_check.alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+
+    it 'should detect a neighbors to the North West' do
+      expect(subject.cell_matrix[0][0].dead?).to be true
+      subject.cell_matrix[0][0].alive = true
+      expect(subject.cell_matrix[0][0].alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+
+    it 'should detect a neighbors to the North East' do
+      expect(subject.cell_matrix[0][2].dead?).to be true
+      subject.cell_matrix[0][2].alive = true
+      expect(subject.cell_matrix[0][2].alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+
+    it 'should detect a neighbors to the Weast' do
+      expect(subject.cell_matrix[1][0].dead?).to be true
+      subject.cell_matrix[1][0].alive = true
+      expect(subject.cell_matrix[1][0].alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+
+    it 'should detect a neighbors to the East' do
+      expect(subject.cell_matrix[1][2].dead?).to be true
+      subject.cell_matrix[1][2].alive = true
+      expect(subject.cell_matrix[1][2].alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+
+    it 'should detect a neighbors to the South Weast' do
+      expect(subject.cell_matrix[2][0].dead?).to be true
+      subject.cell_matrix[2][0].alive = true
+      expect(subject.cell_matrix[2][0].alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+
+    it 'should detect a neighbors to the South East' do
+      expect(subject.cell_matrix[2][2].dead?).to be true
+      subject.cell_matrix[2][2].alive = true
+      expect(subject.cell_matrix[2][2].alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+    it 'should detect a neighbors to the South' do
+      expect(subject.cell_matrix[2][1].dead?).to be true
+      subject.cell_matrix[2][1].alive = true
+      expect(subject.cell_matrix[2][1].alive?).to be true
+      expect(subject.get_live_neighbors(cell).count).to eq(1)
+    end
+    it 'should randomly populate the board' do
+      expect(subject.get_live_cells.count).to eq(0)
+      subject.auto_populate
+      expect(subject.get_live_cells.count).not_to eq(0)
+    end
   end
 
   context 'CellUtilities' do
@@ -62,6 +134,10 @@ describe 'Game of life' do
     it 'should detect this particular cell should live' do
       # Rule 1. Any live cell with fewer than two live neighbours dies, as if by underpopulation.
       expect(cell_validation(1, subject, true)[1].count).to eq(1)
+    end
+    it 'should detect the proper amount of coordinates to verify' do
+      expect(get_coordinates_to_verify([1, 1],[3, 3]).count).to eq(8)
+      expect(get_coordinates_to_verify([0, 0],[3, 3]).count).to eq(3)
     end
   end
 end
