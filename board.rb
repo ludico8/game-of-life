@@ -46,5 +46,4 @@ class Board
   def get_live_cells
     cells.select { |cell| cell.alive }
   end
-
 end

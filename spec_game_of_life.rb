@@ -2,6 +2,7 @@ require 'rspec'
 require_relative 'cell.rb'
 require_relative 'cell_utilities.rb'
 require_relative 'board.rb'
+require_relative 'game.rb'
 
 describe 'Game of life' do
   include CellUtilities
@@ -138,6 +139,31 @@ describe 'Game of life' do
     it 'should detect the proper amount of coordinates to verify' do
       expect(get_coordinates_to_verify([1, 1],[3, 3]).count).to eq(8)
       expect(get_coordinates_to_verify([0, 0],[3, 3]).count).to eq(3)
+    end
+  end
+
+  context 'Game' do
+    subject { Game.new }
+
+    it 'should create a new game object' do
+      expect(subject).to be_a(Game)
+    end
+
+    it 'should respond to proper methods' do
+      expect(subject).to respond_to(:board)
+      expect(subject).to respond_to(:seeds)
+      expect(subject).to respond_to(:play)
+    end
+
+    it 'should initializa with proper attributes' do
+      expect(subject.board).to be_a(Board)
+      expect(subject.seeds).to be_a(Array)
+    end
+
+    it 'should set seeds properly' do
+      game = Game.new(board, [ [2,1], [2,0] ])
+      expect(game.board.cell_matrix[2][1].alive?).to be true
+      expect(game.board.cell_matrix[0][0].dead?).to be true
     end
   end
 end
