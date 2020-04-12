@@ -41,4 +41,10 @@ class Board
   def auto_populate
     cells.each { |cell| cell.alive = [true, false].sample }
   end
+
+  # returns only alive cells
+  def get_live_cells
+    cells.select { |cell| cell.alive }
+  end
+
 end
