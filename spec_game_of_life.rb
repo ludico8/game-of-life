@@ -1,5 +1,6 @@
 require 'rspec'
 require_relative 'cell.rb'
+require_relative 'board.rb'
 
 describe 'Game of life' do
 
@@ -22,5 +23,20 @@ describe 'Game of life' do
     it 'should initialize by default as a dead cell' do
       expect(subject.alive).to be false
     end
+  end
+
+  context 'Board' do
+    subject { Board.new }
+
+    it 'should create a new board object' do
+      expect(subject).to be_a(Board) 
+    end
+
+    it 'should respond to proper methods' do
+      expect(subject).to respond_to(:rows)
+      expect(subject).to respond_to(:cols)
+      expect(subject).to respond_to(:cell_matrix)
+    end
+
   end
 end
